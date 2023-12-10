@@ -1,5 +1,4 @@
 import 'package:bloc_concepts/logic/cubit/counter_cubit.dart';
-import 'package:bloc_concepts/presentation/screens/second_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,7 +81,7 @@ class _MyHomePageState extends State<HomeScreen> {
             MaterialButton(
               color: widget.color,
               onPressed: () {
-                Navigator.of(context).pushNamed('SecondScreen');
+                Navigator.of(context).pushNamed('/second');
               },
               child: const Text('Go to Second Screen'),
             ),
@@ -92,7 +91,7 @@ class _MyHomePageState extends State<HomeScreen> {
             MaterialButton(
               color: widget.color,
               onPressed: () {
-                Navigator.of(context).pushNamed('ThirdScreen');
+                Navigator.of(context).pushNamed('/third');
               },
               child: const Text('Go to Third Screen'),
             ),
