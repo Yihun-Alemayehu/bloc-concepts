@@ -1,7 +1,6 @@
 import 'package:bloc_concepts/cubit/counter_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,12 +14,15 @@ class MyApp extends StatelessWidget {
     return BlocProvider<CounterCubit>(
       create: (context) => CounterCubit(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Counter Using Cubit'),
+        home: const MyHomePage(
+          title: 'C O U N T E R   U S I N G   C U B I T',
+        ),
       ),
     );
   }
@@ -35,20 +37,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+        ),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
@@ -66,17 +63,19 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 FloatingActionButton(
                   onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).increment();
+                    context.read<CounterCubit>().decrement();
+                    //print();
                   },
                   tooltip: 'Decrement',
                   child: const Icon(Icons.remove),
                 ),
                 FloatingActionButton(
                   onPressed: () {
-                    context.read()<CounterCubit>().increment();
+                    BlocProvider.of<CounterCubit>(context).increment();
                   },
                   tooltip: 'increment',
                   child: const Icon(Icons.add),
