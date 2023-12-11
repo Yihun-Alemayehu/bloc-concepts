@@ -6,7 +6,7 @@ class SecondScreen extends StatefulWidget {
   const SecondScreen({
     super.key,
     required this.title,
-    required this.color,
+   required this.color,
   });
 
   final String title;
