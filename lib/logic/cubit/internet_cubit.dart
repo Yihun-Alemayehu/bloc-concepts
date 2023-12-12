@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concepts/presentation/constants/enum.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 part 'internet_state.dart';
 
@@ -14,12 +13,18 @@ class InternetCubit extends Cubit<InternetState> {
   InternetCubit({
     required this.connectivity,
   }) : super(InternetLoading()) {
-    connectivityStreamSubscription =
+    monitorInternetConnection();
+  }
+
+  StreamSubscription<ConnectivityResult> monitorInternetConnection() {
+    return connectivityStreamSubscription =
         connectivity.onConnectivityChanged.listen((connectivityResult) {
       if (connectivityResult == ConnectivityResult.wifi) {
         emitInternetConnected(ConnectionType.wifi);
       } else if (connectivityResult == ConnectivityResult.mobile) {
         emitInternetConnected(ConnectionType.data);
+      } else if (connectivityResult == ConnectivityResult.none) {
+        emitInternetDisconnected();
       }
     });
   }
@@ -28,9 +33,7 @@ class InternetCubit extends Cubit<InternetState> {
         InternetConnected(connectionType: _connectionType),
       );
 
-  void emitInternetDisconnected(ConnectionType _connectionType) => emit(
-        InternetConnected(connectionType: _connectionType),
-      );
+  void emitInternetDisconnected() => emit(InternetDisconnected());
 
   @override
   Future<void> close() {
@@ -38,6 +41,7 @@ class InternetCubit extends Cubit<InternetState> {
     return super.close();
   }
 
-  StreamSubscription listen(Null Function(dynamic internetState) param0) {
-  }
+  //StreamSubscription listen(Null Function(dynamic internetState) param0) {}
+
+  // StreamSubscription listen(Null Function(dynamic internetState) param0) {}
 }

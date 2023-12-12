@@ -12,16 +12,20 @@ class CounterCubit extends Cubit<CounterState> {
   late StreamSubscription internetStreamSubscription;
 
   CounterCubit({required this.internetCubit})
-      : super(CounterState(counterValue: 0, wasIncremented: false)) {
-    internetStreamSubscription = internetCubit.listen((internetState) {
-      if (internetState is InternetConnected &&
-          internetState.connectionType == ConnectionType.wifi) {
-        increment();
-      }else if (internetState is InternetConnected && 
-      internetState.connectionType == ConnectionType.data){
-        decrement();
-      }
-    });
+      : super(CounterState(counterValue: 0, wasIncremented: false)) { 
+    monitorInternetCubit();
+  }
+
+  StreamSubscription<InternetState> monitorInternetCubit() {
+    return internetStreamSubscription = internetCubit.listen((internetState) {
+    if (internetState is InternetConnected &&
+        internetState.connectionType == ConnectionType.wifi) {
+      increment();
+    }else if (internetState is InternetConnected && 
+    internetState.connectionType == ConnectionType.data){
+      decrement();
+    }
+  });
   }
 
   void increment() => emit(
@@ -29,4 +33,10 @@ class CounterCubit extends Cubit<CounterState> {
 
   void decrement() => emit(CounterState(
       counterValue: state.counterValue - 1, wasIncremented: false));
+
+      @override
+      Future<void> close(){
+        internetStreamSubscription.cancel();
+        return super.close();
+      }
 }
