@@ -13,13 +13,17 @@ class CounterCubit extends Cubit<CounterState> {
     required this.internetCubit,
     // required this.internetStreamSubscription,
   }): super(CounterState(counterValue: 0, wasIncremented: false)){
-    internetStreamSubscription = internetCubit.stream.listen((internetState){
-      if(internetState is InternetConnected && internetState.connectionType == ConnectionType.wifi) {
-        increment();
-      }else if(internetState is InternetConnected && internetState.connectionType == ConnectionType.Mobile){
-        decrement();
-      }
-    });
+    monitorInternetCubit();
+  }
+
+  StreamSubscription<InternetState> monitorInternetCubit() {
+    return internetStreamSubscription = internetCubit.stream.listen((internetState){
+    if(internetState is InternetConnected && internetState.connectionType == ConnectionType.wifi) {
+      increment();
+    }else if(internetState is InternetConnected && internetState.connectionType == ConnectionType.Mobile){
+      decrement();
+    }
+  });
   }
   void increment() => emit(
       CounterState(counterValue: state.counterValue + 1, wasIncremented: true));
