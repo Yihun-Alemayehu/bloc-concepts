@@ -1,4 +1,6 @@
 import 'package:bloc_concepts/logic/cubit/counter_cubit.dart';
+import 'package:bloc_concepts/logic/cubit/internet_cubit.dart';
+import 'package:bloc_concepts/presentation/constants/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,6 +33,20 @@ class _MyHomePageState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            BlocBuilder<InternetCubit, InternetState>(
+              builder: (context, state) {
+                if (state is InternetConnected &&
+                    state.connectionType == ConnectionType.wifi) {
+                  return const Text('Wifi');
+                } else if (state is InternetConnected &&
+                    state.connectionType == ConnectionType.Mobile) {
+                  return const Text('Mobile');
+                } else if (state is InternetDisconnected) {
+                  return const Text('Disconnected');
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
             const Text(
               'You have pushed the button this many times:',
             ),
@@ -55,46 +71,46 @@ class _MyHomePageState extends State<HomeScreen> {
                 );
               },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    context.read<CounterCubit>().decrement();
-                    //print();
-                  },
-                  tooltip: 'Decrement',
-                  child: const Icon(Icons.remove),
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).increment();
-                  },
-                  tooltip: 'increment',
-                  child: const Icon(Icons.add),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            MaterialButton(
-              color: widget.color,
-              onPressed: () {
-                Navigator.of(context).pushNamed('/second');
-              },
-              child: const Text('Go to Second Screen'),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            MaterialButton(
-              color: widget.color,
-              onPressed: () {
-                Navigator.of(context).pushNamed('/third');
-              },
-              child: const Text('Go to Third Screen'),
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            //     FloatingActionButton(
+            //       onPressed: () {
+            //         context.read<CounterCubit>().decrement();
+            //         //print();
+            //       },
+            //       tooltip: 'Decrement',
+            //       child: const Icon(Icons.remove),
+            //     ),
+            //     FloatingActionButton(
+            //       onPressed: () {
+            //         BlocProvider.of<CounterCubit>(context).increment();
+            //       },
+            //       tooltip: 'increment',
+            //       child: const Icon(Icons.add),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // MaterialButton(
+            //   color: widget.color,
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed('/second');
+            //   },
+            //   child: const Text('Go to Second Screen'),
+            // ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // MaterialButton(
+            //   color: widget.color,
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed('/third');
+            //   },
+            //   child: const Text('Go to Third Screen'),
+            // ),
           ],
         ),
       ),
